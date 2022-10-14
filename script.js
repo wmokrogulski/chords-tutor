@@ -62,13 +62,13 @@ function loadSounds() {
   if (!notes.length) loadNotes()
   bestScore = getCookie("bestScore")
   updateScore()
-  for (const note of notes) {
-    document.body.innerHTML += `<audio
-        id="${note}"
-        src="./sounds/${note}.mp3"
-      ></audio>`
-  }
-  console.log(`Loaded ${notes.length} notes.`)
+  // for (const note of notes) {
+  //   document.body.innerHTML += `<audio
+  //       id="${note}"
+  //       src="./sounds/${note}.mp3"
+  //     ></audio>`
+  // }
+  // console.log(`Loaded ${notes.length} notes.`)
   const playBtn = document.getElementById("play")
   setTimeout(() => {
     playBtn.onclick = question
@@ -198,14 +198,15 @@ function getRandomChord() {
       break
   }
   root = root.slice(0, root.length - 1)
-  console.log(root)
+  // console.log(root)
   return chordNotes
 }
 
-function playNote(note) {
-  const audioFile = document.getElementById(note)
-  audioFile.currentTime = 0
-  audioFile.play()
+async function playNote(note) {
+  await new Audio(`./sounds/${note}.mp3`).play()
+  // const audioFile = document.getElementById(note)
+  // audioFile.currentTime = 0
+  // audioFile.play()
 }
 
 function playNotes(notes) {

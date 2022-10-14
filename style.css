@@ -58,3 +58,12 @@ body {
 #score-board {
   font-size: 2em;
 }
+
+@media screen and (max-width: 600px) {
+  .white {
+    --width: 40px;
+  }
+  .black {
+    --width: 25px;
+  }
+}
