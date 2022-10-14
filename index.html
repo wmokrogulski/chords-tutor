@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chord game</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <script>
+      window.onload = loadSounds
+    </script>
+    <div id="score-board" class="message">
+      <div class="score-line">
+        Current score: <span class="score" id="currentScore">0</span>
+      </div>
+      <div class="score-line">
+        Best score: <span class="score" id="bestScore">0</span>
+      </div>
+    </div>
+    <div id="manual" class="message">
+      <p>Welcome to the game in which you can test your listening skills.</p>
+      <p>Press the play button to hear the question.</p>
+      <p>
+        You will hear A4 and then a chord. Press on the piano the root of the
+        chord.
+      </p>
+    </div>
+    <div id="play" class="hidden">PLAY</div>
+    <div id="response" class="hidden message"></div>
+    <div class="piano">
+      <div id="C" class="key white"></div>
+      <div id="Db" class="key black"></div>
+      <div id="D" class="key white"></div>
+      <div id="Eb" class="key black"></div>
+      <div id="E" class="key white"></div>
+      <div id="F" class="key white"></div>
+      <div id="Gb" class="key black"></div>
+      <div id="G" class="key white"></div>
+      <div id="Ab" class="key black"></div>
+      <div id="A" class="key white"></div>
+      <div id="Bb" class="key black"></div>
+      <div id="B" class="key white"></div>
+    </div>
+  </body>
+</html>
