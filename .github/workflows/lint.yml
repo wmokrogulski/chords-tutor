@@ -1,3 +1,4 @@
+name: jslint
 on:
   push:
   pull_request:
