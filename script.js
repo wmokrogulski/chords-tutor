@@ -7,6 +7,10 @@ var tries = 0
 const MAX_TRIES = 3
 var score = 0
 var bestScore = 0
+var hideResponseTimeout = null
+var addListenersTimeout = null
+var playChordTimeout = null
+var questionTimeout = null
 
 function setCookie(cname, cvalue, exdays = 365) {
   const d = new Date()
@@ -61,6 +65,7 @@ function loadNotes() {
 function loadSounds() {
   if (!notes.length) loadNotes()
   bestScore = getCookie("bestScore")
+  if(!bestScore) bestScore=0
   updateScore()
   // for (const note of notes) {
   //   document.body.innerHTML += `<audio
@@ -70,7 +75,8 @@ function loadSounds() {
   // }
   // console.log(`Loaded ${notes.length} notes.`)
   const playBtn = document.getElementById("play")
-  setTimeout(() => {
+  clearTimeout(addListenersTimeout)
+  addListenersTimeout = setTimeout(() => {
     playBtn.onclick = question
     playBtn.classList.remove("hidden")
     const keys = document.querySelectorAll(".key")
@@ -83,7 +89,8 @@ function loadSounds() {
 function question() {
   playNote("A4")
   if (!chordNotes.length) chordNotes = getRandomChord()
-  setTimeout(() => playNotes(chordNotes), 1000)
+  clearTimeout(playChordTimeout)
+  playChordTimeout = setTimeout(() => playNotes(chordNotes), 1000)
 }
 
 function checkAnswer(key) {
@@ -108,16 +115,18 @@ function checkAnswer(key) {
   if (tries == 0) {
     respond(`${msg}Try with the next chord!`, color)
     chordNotes = getRandomChord()
-    setTimeout(() => question(), 1000)
+    clearTimeout(questionTimeout)
+    questionTimeout = setTimeout(() => question(), 1000)
   }
 }
 
 function respond(msg, color) {
   const el = document.getElementById("response")
+  clearTimeout(hideResponseTimeout)
   el.classList.remove("hidden")
   el.style.backgroundColor = color
   el.innerText = msg
-  setTimeout(() => {
+  hideResponseTimeout = setTimeout(() => {
     el.classList.add("hidden")
   }, 4000)
 }
