@@ -1,16 +1,17 @@
-var notes = []
-var chordNotes = []
-var root = null
-var chordTypeName = null
-var chordInversion = null
-var tries = 0
+let notes = []
+let chordNotes = []
+let root = null
+let chordTypeName = null
+let chordInversion = null
+let tries = 0
 const MAX_TRIES = 3
-var score = 0
-var bestScore = 0
-var hideResponseTimeout = null
-var addListenersTimeout = null
-var playChordTimeout = null
-var questionTimeout = null
+let score = 0
+let bestScore = 0
+let hideResponseTimeout = null
+let addListenersTimeout = null
+let playChordTimeout = null
+let questionTimeout = null
+let playA4 = true
 
 function setCookie(cname, cvalue, exdays = 365) {
   const d = new Date()
@@ -64,20 +65,18 @@ function loadNotes() {
 
 function loadSounds() {
   if (!notes.length) loadNotes()
+  withA4 = getCookie("withA4")
+  if(!withA4.length)
+    withA4 = true
+  else
+    withA4 = !!parseInt(withA4)
   bestScore = getCookie("bestScore")
-  if(!bestScore) bestScore=0
+  if(!bestScore.length) bestScore=0
   updateScore()
-  // for (const note of notes) {
-  //   document.body.innerHTML += `<audio
-  //       id="${note}"
-  //       src="./sounds/${note}.mp3"
-  //     ></audio>`
-  // }
-  // console.log(`Loaded ${notes.length} notes.`)
   const playBtn = document.getElementById("play")
   clearTimeout(addListenersTimeout)
   addListenersTimeout = setTimeout(() => {
-    playBtn.onclick = question
+    playBtn.onclick = () => {question(withA4)}
     playBtn.classList.remove("hidden")
     const keys = document.querySelectorAll(".key")
     keys.forEach((key) => {
@@ -86,16 +85,16 @@ function loadSounds() {
   }, 3000)
 }
 
-function question() {
-  playNote("A4")
+function question(withA4) {
+  if(withA4) playNote("A4")
   if (!chordNotes.length) chordNotes = getRandomChord()
   clearTimeout(playChordTimeout)
   playChordTimeout = setTimeout(() => playNotes(chordNotes), 1000)
 }
 
 function checkAnswer(key) {
-  var msg = ""
-  var color = "#dd3333"
+  let msg = ""
+  let color = "#dd3333"
   if (root == key) {
     color = "#009900"
     msg = `Bravo\nThat was ${root} ${chordTypeName} in ${chordInversion}.\n`
@@ -154,12 +153,10 @@ function getRandomChord() {
   const noteIndex = notes.indexOf(note)
   const chordType = Math.floor(Math.random() * 2) // 0 - major 1 - minor
   chordTypeName = ["major", "minor"][chordType]
-  // console.log(chordTypeName)
   const inversion = Math.floor(Math.random() * 3)
   chordInversion = ["root position", "first inversion", "second inversion"][
     inversion
   ]
-  // console.log(chordInversion)
   chordNotes = [note]
   switch (chordType) {
     case 0: // major
@@ -207,15 +204,11 @@ function getRandomChord() {
       break
   }
   root = root.slice(0, root.length - 1)
-  // console.log(root)
   return chordNotes
 }
 
 async function playNote(note) {
   await new Audio(`./sounds/${note}.mp3`).play()
-  // const audioFile = document.getElementById(note)
-  // audioFile.currentTime = 0
-  // audioFile.play()
 }
 
 function playNotes(notes) {
