@@ -207,8 +207,8 @@ function getRandomChord() {
   return chordNotes
 }
 
-async function playNote(note) {
-  await new Audio(`./sounds/${note}.mp3`).play()
+function playNote(note) {
+  new Audio(`./sounds/${note}.mp3`).play()
 }
 
 function playNotes(notes) {
